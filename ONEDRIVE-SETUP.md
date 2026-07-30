@@ -30,9 +30,14 @@ OneDrive ▸ Verena Stock
 Put **`Verena-Diamond-Stock.xlsx`** inside it. Wait for the green tick / cloud
 icon to show it has finished uploading.
 
-### 2. Hide the Costing tab
-Open the file. Right-click the **Costing** tab ▸ **Hide**.
-(It ships hidden already — just confirm it is not showing.)
+### 2. Know which tab is for whom
+Nothing is hidden — your staff can see cost, profit and margin, by design.
+There is only one rule to teach them:
+
+> **Customers get shown the `Customer View` tab. Never `Stock and Costing`.**
+
+`Customer View` has no cost, no minimum price and no margin on it, and it is
+already set up to print in landscape with the headings repeated on each page.
 
 ### 3. Share the folder — not the file
 Right-click the **Verena Stock** folder ▸ **Share**.
@@ -97,21 +102,18 @@ in a downloaded copy for a week and then saving it over the top.
 
 These are real, and worth knowing before you rely on it:
 
-**1. You cannot hide the cost data properly.**
-Personal/Family OneDrive has no per-sheet permissions. Hiding the **Costing**
-tab stops accidental viewing, but anyone with edit access can right-click ▸
-Unhide. Staff *do* need the Minimum Price to negotiate, and that is on their
-tab by design — but base cost, supplier and margin are only one right-click
-away.
-*If cost must be truly invisible to staff, you need two separate files (and you
-would have to type minimum prices in by hand), or a Microsoft 365 Business
-plan.*
+**1. Anyone with the link sees your cost and margin.**
+Staff seeing cost is your decision and the file is built for it — but that makes
+the *share link* the thing to guard. Use **Specific people**, never "Anyone with
+the link", or a forwarded link hands a competitor your supplier prices and
+margins. When someone leaves, remove their access: right-click the folder ▸
+**Manage access**.
 
 **2. Sheet protection has no password.**
-The two price columns on the Stock List are locked so formulas cannot be
-damaged, but it is unlocked via Review ▸ Unprotect Sheet with no password — so
-nothing stops a determined person. Add a password there if you want, and keep a
-note of it somewhere safe.
+The grey calculated columns are locked so the formulas cannot be damaged, but it
+unlocks via Review ▸ Unprotect Sheet with no password — nothing stops a
+determined person. Add a password if you want, and keep a note of it somewhere
+safe.
 
 **3. Editing on a big tablet may ask for a subscription.**
 The Excel app edits for free on phones. On an iPad or a large Android tablet,
@@ -137,8 +139,8 @@ Show your staff this exists — it turns a disaster into a two-minute fix.
 The moment you want proper phone-first data entry, per-person permissions, and
 a real audit trail, the upgrade is **Microsoft 365 Business Basic** (about
 US$6/user/month). It unlocks **SharePoint Lists** and **Power Apps**, which give
-you a genuine app — big buttons, no spreadsheet grid, cost data invisible to
-staff by permission rather than by hiding a tab.
+you a genuine app — big buttons instead of a spreadsheet grid, a proper audit
+trail of who changed what, and per-person control over who sees which columns.
 
 Nothing you have built here is wasted: a SharePoint List imports directly from
 this workbook.

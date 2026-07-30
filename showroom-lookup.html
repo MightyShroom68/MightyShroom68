@@ -175,7 +175,7 @@
     var h = findHeader(grid);
     if(h === -1){
       alert("That file does not look like the Verena stock list.\n\n" +
-            "In Excel, open the Stock List tab and use File ▸ Save As ▸ CSV.");
+            "In Excel, open the Stock and Costing tab and use File ▸ Save As ▸ CSV.");
       return false;
     }
     var head = grid[h].map(function(x){ return x.trim().toLowerCase(); });
@@ -261,7 +261,7 @@
     if(!rows.length){
       list.innerHTML = '<div class="empty"><div class="big">💎</div><b>No stock list loaded.</b><br><br>' +
         'Tap <b>Load stock file</b> and pick the CSV you saved from<br>' +
-        '<code>Verena-Diamond-Stock.xlsx</code> (Stock List tab ▸ Save As ▸ CSV).</div>';
+        '<code>Verena-Diamond-Stock.xlsx</code> (Stock and Costing tab ▸ Save As ▸ CSV).</div>';
       document.getElementById("count").textContent = "";
       return;
     }
