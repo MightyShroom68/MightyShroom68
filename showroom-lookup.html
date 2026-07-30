@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verena Jewellery — Showroom Lookup</title>
+<style>
+  :root{
+    --bg:#faf7f2; --panel:#fff; --ink:#20242b; --muted:#6b7280; --line:#e7e2d8;
+    --gold:#b8933f; --gold-dark:#8f7126;
+    --green:#137a4b; --green-bg:#e6f4ec;
+    --amber:#a5620a; --amber-bg:#fbf0dc;
+    --grey:#5b6470; --grey-bg:#eceef1;
+    --red:#9c0006; --red-bg:#ffc7ce;
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.45;-webkit-text-size-adjust:100%}
+  .wrap{max-width:1000px;margin:0 auto;padding:14px 14px 80px}
+
+  header{display:flex;align-items:center;gap:12px;padding:10px 2px 14px;flex-wrap:wrap}
+  .logo{width:44px;height:44px;border-radius:11px;flex:0 0 auto;color:#fff;font-size:23px;
+        background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+        display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+  header h1{margin:0;font-size:19px}
+  header p{margin:0;color:var(--muted);font-size:12.5px}
+  .spacer{flex:1}
+
+  .btn{border:0;border-radius:10px;padding:11px 15px;font-size:14.5px;font-weight:600;cursor:pointer;
+       font-family:inherit;display:inline-flex;align-items:center;gap:7px}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;box-shadow:var(--shadow)}
+  .btn-ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}
+
+  .banner{border-radius:12px;padding:12px 15px;margin-bottom:14px;font-size:14px;display:flex;
+          gap:10px;align-items:center;flex-wrap:wrap}
+  .banner.ok{background:var(--green-bg);color:var(--green)}
+  .banner.warn{background:var(--amber-bg);color:var(--amber)}
+  .banner.info{background:#fff;border:1px dashed var(--line);color:var(--muted)}
+  .banner b{font-weight:700}
+
+  .banner.readonly{background:#eef2f7;border:1px solid #d3ddea;color:#3f5570}
+  .tools{display:flex;gap:9px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+         border-radius:13px;padding:11px;box-shadow:var(--shadow);margin-bottom:14px}
+  .search{flex:1 1 240px;display:flex;align-items:center;gap:8px;background:#fff;
+          border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+  .search:focus-within{border-color:var(--gold)}
+  .search input{border:0;outline:0;font-size:17px;width:100%;background:transparent;color:var(--ink)}
+  select{font-size:15px;padding:10px 11px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit}
+
+  .count{color:var(--muted);font-size:13px;margin:0 3px 10px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);
+        padding:13px 15px;margin-bottom:9px;display:grid;grid-template-columns:110px 1fr 190px;
+        gap:13px;align-items:center}
+  .card.sold{opacity:.62}
+  .sku{font-weight:700;font-size:15.5px}
+  .sku small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:1px}
+  .specs{display:flex;flex-wrap:wrap;gap:5px 7px}
+  .chip{font-size:12.5px;background:#f4f1ea;border:1px solid var(--line);border-radius:999px;
+        padding:3px 9px;color:#4b5563;white-space:nowrap}
+  .chip b{color:var(--ink)}
+  .prices{text-align:right}
+  .retail{font-weight:700;font-size:17px;white-space:nowrap}
+  .retail small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+  .floor{margin-top:5px;font-size:13px;font-weight:700;color:var(--red);white-space:nowrap}
+  .floor small{display:block;font-weight:600;font-size:11px;opacity:.8}
+  .askowner{background:var(--red-bg);color:var(--red);font-weight:700;border-radius:8px;
+            padding:7px 10px;font-size:13px;text-align:center}
+  .badge{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;margin-top:5px}
+  .badge.instock{background:var(--green-bg);color:var(--green)}
+  .badge.reserved{background:var(--amber-bg);color:var(--amber)}
+  .badge.sold{background:var(--grey-bg);color:var(--grey)}
+
+  .empty{text-align:center;padding:50px 20px;color:var(--muted);background:var(--panel);
+         border:1px dashed var(--line);border-radius:13px}
+  .empty .big{font-size:38px;margin-bottom:8px}
+  .empty code{background:#f4f1ea;padding:2px 6px;border-radius:5px;font-size:13px}
+
+  @media (max-width:720px){
+    .card{grid-template-columns:1fr;gap:9px}
+    .prices{text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">◆</div>
+    <div>
+      <h1>Showroom Lookup</h1>
+      <p>Verena Jewellery — fast search for the counter</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn btn-ghost" id="loadBtn">📂 &nbsp;Load stock file</button>
+  </header>
+
+  <div class="banner readonly">
+    <span>👁️</span>
+    <span><b>Look-up only.</b> Nothing you do here changes the stock. To reserve or sell a
+    stone, open <b>Verena-Diamond-Stock.xlsx</b> on OneDrive.</span>
+  </div>
+
+  <div id="ageBanner"></div>
+
+  <div class="tools">
+    <label class="search">
+      <span>🔍</span>
+      <input id="q" type="search" placeholder="Search shape, carat, certificate, stock no…" autocomplete="off" />
+    </label>
+    <select id="fStatus">
+      <option value="">All statuses</option>
+      <option value="In Stock">In Stock</option>
+      <option value="Reserved">Reserved</option>
+      <option value="Sold">Sold</option>
+    </select>
+    <select id="fShape"><option value="">All shapes</option></select>
+  </div>
+
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+</div>
+
+<input type="file" id="file" accept=".csv,.txt" style="display:none" />
+
+<script>
+(function(){
+  "use strict";
+  var CACHE = "verena_lookup_cache_v1";
+  var rows = [], loadedAt = null;
+
+  /* ---------- CSV parsing ---------- */
+  function parseCSV(text){
+    var out=[], row=[], cur="", i=0, q=false, ch;
+    text = text.replace(/^﻿/, "");
+    while(i < text.length){
+      ch = text[i];
+      if(q){
+        if(ch === '"'){ if(text[i+1] === '"'){ cur += '"'; i++; } else q = false; }
+        else cur += ch;
+      } else {
+        if(ch === '"') q = true;
+        else if(ch === ","){ row.push(cur); cur = ""; }
+        else if(ch === "\n"){ row.push(cur); out.push(row); row = []; cur = ""; }
+        else if(ch !== "\r") cur += ch;
+      }
+      i++;
+    }
+    if(cur !== "" || row.length){ row.push(cur); out.push(row); }
+    return out;
+  }
+
+  // Excel exports the title/summary/legend rows too, so find the real header row.
+  function findHeader(grid){
+    for(var r=0; r<Math.min(grid.length,20); r++){
+      var joined = grid[r].join("|").toLowerCase();
+      if(joined.indexOf("stock no") !== -1 && joined.indexOf("shape") !== -1) return r;
+    }
+    return -1;
+  }
+
+  function num(v){
+    if(v == null) return null;
+    var s = String(v).trim();
+    if(!s) return null;
+    if(/ask owner/i.test(s)) return "ASK";
+    var digits = s.replace(/[^0-9.]/g, "");
+    if(!digits) return null;
+    var n = parseFloat(digits);
+    return isNaN(n) ? null : n;
+  }
+
+  function ingest(text){
+    var grid = parseCSV(text);
+    var h = findHeader(grid);
+    if(h === -1){
+      alert("That file does not look like the Verena stock list.\n\n" +
+            "In Excel, open the Stock List tab and use File ▸ Save As ▸ CSV.");
+      return false;
+    }
+    var head = grid[h].map(function(x){ return x.trim().toLowerCase(); });
+    function col(){
+      var names = [].slice.call(arguments);
+      for(var j=0; j<head.length; j++)
+        for(var k=0; k<names.length; k++)
+          if(head[j].indexOf(names[k]) !== -1) return j;
+      return -1;
+    }
+    var m = {
+      sku:col("stock no"), status:col("status"), shape:col("shape"), carat:col("carat"),
+      colour:col("colour","color"), clarity:col("clarity"), lab:col("lab"),
+      cert:col("certificate"), retail:col("retail price"), min:col("minimum price"),
+      who:col("reserved / sold to","reserved","sold to"), notes:col("notes")
+    };
+    var out = [];
+    for(var r=h+1; r<grid.length; r++){
+      var c = grid[r];
+      function g(key){ var i = m[key]; return i >= 0 && c[i] != null ? String(c[i]).trim() : ""; }
+      var rec = {
+        sku:g("sku"), status:g("status"), shape:g("shape"), carat:g("carat"),
+        colour:g("colour"), clarity:g("clarity"), lab:g("lab"), cert:g("cert"),
+        retail:num(g("retail")), min:num(g("min")), who:g("who"), notes:g("notes")
+      };
+      if(!rec.sku) continue;
+      if(!/^(In Stock|Reserved|Sold)$/i.test(rec.status)) rec.status = rec.status || "In Stock";
+      out.push(rec);
+    }
+    if(!out.length){ alert("No diamonds found in that file."); return false; }
+    rows = out;
+    loadedAt = new Date().toISOString();
+    try{ localStorage.setItem(CACHE, JSON.stringify({rows:rows, at:loadedAt})); }catch(e){}
+    return true;
+  }
+
+  /* ---------- render ---------- */
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function rp(n){
+    if(n === "ASK") return "ASK OWNER";
+    if(n == null) return "—";
+    return "Rp " + n.toLocaleString("en-US");
+  }
+
+  function ageBanner(){
+    var el = document.getElementById("ageBanner");
+    if(!loadedAt){
+      el.innerHTML = '<div class="banner info">No stock file loaded yet.</div>';
+      return;
+    }
+    var d = new Date(loadedAt);
+    var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+    var when = d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"}) +
+               " at " + d.toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"});
+    if(days >= 3){
+      el.innerHTML = '<div class="banner warn"><span>⚠️</span><span><b>This list is ' + days +
+        ' days old</b> (loaded ' + esc(when) + '). Stones may have sold since. Load a fresh copy before quoting.</span></div>';
+    } else {
+      el.innerHTML = '<div class="banner ok"><span>✓</span><span>Stock list loaded ' + esc(when) + '.</span></div>';
+    }
+  }
+
+  function fillShapes(){
+    var sel = document.getElementById("fShape");
+    var seen = {}, list = [];
+    rows.forEach(function(r){ if(r.shape && !seen[r.shape]){ seen[r.shape] = 1; list.push(r.shape); } });
+    list.sort();
+    sel.innerHTML = '<option value="">All shapes</option>' +
+      list.map(function(s){ return '<option>' + esc(s) + '</option>'; }).join("");
+  }
+
+  function render(){
+    ageBanner();
+    var q = document.getElementById("q").value.trim().toLowerCase();
+    var fs = document.getElementById("fStatus").value;
+    var fsh = document.getElementById("fShape").value;
+    var list = document.getElementById("list");
+
+    if(!rows.length){
+      list.innerHTML = '<div class="empty"><div class="big">💎</div><b>No stock list loaded.</b><br><br>' +
+        'Tap <b>Load stock file</b> and pick the CSV you saved from<br>' +
+        '<code>Verena-Diamond-Stock.xlsx</code> (Stock List tab ▸ Save As ▸ CSV).</div>';
+      document.getElementById("count").textContent = "";
+      return;
+    }
+
+    var out = rows.filter(function(r){
+      if(fs && r.status.toLowerCase() !== fs.toLowerCase()) return false;
+      if(fsh && r.shape !== fsh) return false;
+      if(q){
+        var hay = [r.sku,r.shape,r.carat,r.colour,r.clarity,r.lab,r.cert,r.who,r.notes].join(" ").toLowerCase();
+        if(hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    var order = {"in stock":0,"reserved":1,"sold":2};
+    out.sort(function(a,b){
+      var d = (order[a.status.toLowerCase()] || 0) - (order[b.status.toLowerCase()] || 0);
+      if(d) return d;
+      return (parseFloat(b.carat) || 0) - (parseFloat(a.carat) || 0);
+    });
+
+    document.getElementById("count").textContent =
+      out.length + (out.length === 1 ? " diamond" : " diamonds") +
+      (out.length !== rows.length ? " shown of " + rows.length : "");
+
+    if(!out.length){
+      list.innerHTML = '<div class="empty"><div class="big">🔍</div>Nothing matches that search.</div>';
+      return;
+    }
+
+    list.innerHTML = out.map(function(r){
+      var st = r.status.toLowerCase().replace(/\s+/g,"");
+      st = st === "instock" ? "instock" : st === "reserved" ? "reserved" : "sold";
+      var chips = [];
+      if(r.carat)   chips.push('<span class="chip"><b>' + esc(r.carat) + ' ct</b></span>');
+      if(r.colour)  chips.push('<span class="chip">Colour <b>' + esc(r.colour) + '</b></span>');
+      if(r.clarity) chips.push('<span class="chip">' + esc(r.clarity) + '</span>');
+      if(r.lab || r.cert) chips.push('<span class="chip">' + esc(r.lab || "Cert") +
+                                     (r.cert ? " " + esc(r.cert) : "") + '</span>');
+      if(r.who)     chips.push('<span class="chip">' + esc(r.who) + '</span>');
+
+      var priceBlock;
+      if(r.retail === "ASK" || r.min === "ASK" || (r.retail == null && r.min == null)){
+        priceBlock = '<div class="askowner">⚠ ASK OWNER<br><span style="font-weight:600;font-size:11.5px">no price set — do not quote</span></div>';
+      } else {
+        priceBlock = '<div class="retail">' + esc(rp(r.retail)) + '<small>retail price</small></div>' +
+                     '<div class="floor">Floor ' + esc(rp(r.min)) + '<small>never go below</small></div>';
+      }
+
+      return '<div class="card' + (st === "sold" ? " sold" : "") + '">' +
+        '<div class="sku">' + esc(r.sku) + '<small>' + esc(r.shape) + '</small></div>' +
+        '<div class="specs">' + chips.join("") + '</div>' +
+        '<div class="prices">' + priceBlock +
+          '<span class="badge ' + st + '">' + esc(r.status) + '</span></div>' +
+      '</div>';
+    }).join("");
+  }
+
+  /* ---------- wiring ---------- */
+  document.getElementById("loadBtn").onclick = function(){ document.getElementById("file").click(); };
+  document.getElementById("file").addEventListener("change", function(e){
+    var f = e.target.files[0];
+    if(!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){ if(ingest(rd.result)){ fillShapes(); render(); } };
+    rd.readAsText(f);
+    e.target.value = "";
+  });
+  ["q","fStatus","fShape"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", render);
+  });
+
+  // restore last loaded list so the tablet still works with no connection
+  try{
+    var c = JSON.parse(localStorage.getItem(CACHE));
+    if(c && c.rows){ rows = c.rows; loadedAt = c.at; }
+  }catch(e){}
+  fillShapes();
+  render();
+})();
+</script>
+</body>
+</html>

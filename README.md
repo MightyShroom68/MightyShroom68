@@ -1,71 +1,118 @@
-# Verena Jewellery — Diamond Stock Book
+# Verena Jewellery — Lab Grown Diamond Stock Tracking
 
-A dead-simple stock tracker for our lab-grown diamonds, built to replace the
-Excel sheet. It runs in any web browser (shop computer, laptop, tablet, or
-phone). **No installation, no login, no internet needed after it's opened.**
+Replaces `2026_LGD_Costing.xlsx`. Built to live on **OneDrive** so the shop and
+the website team work from one list, on a computer or a phone.
+
+| File | What it is | Who uses it |
+|---|---|---|
+| **`Verena-Diamond-Stock.xlsx`** | The stock list. **This is the only place stock is recorded.** | Everyone |
+| **`ONEDRIVE-SETUP.md`** | How to put it on OneDrive and open it on a phone | Owner, once |
+| `showroom-lookup.html` | Optional fast search screen for a counter tablet — **look-up only** | Sales, optional |
+| `sample-import.csv` | Example of the column layout | Reference |
 
 ---
 
-## For sales staff — how to use it (60 seconds)
+## Start here
 
-Open **`index.html`** (double-click it, or tap the bookmark on the counter
-tablet). That's it — everything is on one screen.
+1. Read **`ONEDRIVE-SETUP.md`** and do Part 1 (10 minutes).
+2. Send your sales staff Part 2 (5 minutes each).
+3. Open the workbook's **How To Use** tab — it is written for someone who has
+   never used Excel.
 
-| I want to… | Do this |
+---
+
+## What's inside the workbook
+
+| Tab | Purpose |
 |---|---|
-| **Find a diamond** | Type in the search box (stock number, shape, certificate, customer name…). |
-| **See only what's available** | Use the **All statuses** dropdown → *In Stock*. |
-| **Add a new diamond** | Tap the gold **＋ Add Diamond** button, fill it in, **Save**. |
-| **Sell a diamond** | Tap **Mark Sold** on its row, add the price/customer, **Confirm**. |
-| **Hold one for a customer** | Tap **Reserve**. Tap **Un-reserve** to release it. |
-| **Fix a mistake** | Tap **Edit** on the row. |
+| **Stock List** | What staff use all day. Green headings = type here. Grey = calculated. |
+| **Costing** | *Hidden.* Base cost, supplier, profit, margin. Owner only. |
+| **Settings** | Exchange rate and the two mark-up multipliers. Change one number, every price updates. |
+| **How To Use** | Plain-language instructions for staff and for you. |
+| **Notes & Fixes** | Every problem found in the old file and what was done about it. |
 
-The coloured tiles at the top always show: how many are **in stock**,
-**reserved**, **sold this month**, and the **total value** of current stock.
+### The two numbers sales staff need
+- **Retail Price (Rp)** — what to quote.
+- **Minimum Price (Rp)** — the floor. Never sell below it without your approval.
+  It is cost × 2.5, exactly as in your original sheet.
 
-Colour on the left edge of each row = where it's listed:
-🔵 Website · 🟡 Retail shop · 🟣 Both.
-
----
-
-## For the shop owner — setup & housekeeping
-
-### Bring in the current Excel list
-1. In Excel, choose **File → Save As → CSV**.
-2. In the app, tap **☰ More → ⬆️ Bring in my Excel file** and pick that CSV.
-
-The importer matches columns automatically (Stock No, Carat, Colour, Clarity,
-Cut, Lab, Certificate, Price, Status, etc.), so your existing headings usually
-just work. See **`sample-import.csv`** for the ideal column layout.
-
-### Back up your data (do this regularly!)
-Tap **☰ More → ⬇️ Save a backup**. This downloads a CSV you can open in Excel
-or keep as a safety copy.
-
-> ⚠️ **Important:** the app saves diamonds *on the device/browser you use it in*
-> (like notes saved on that computer). It does **not** automatically sync
-> between the shop computer and the website. Pick **one main device** as the
-> master stock book, and use the backup/import buttons to move data around or
-> keep copies. A regular backup means you never lose anything.
-
-### Try it first
-Tap **☰ More → ✨ Load example diamonds** to see how it looks with data, then
-**🗑️ Delete everything** when you're ready to start real entries.
-
-### Print a stock list
-Tap **☰ More → 🖨️ Print stock list** for a clean printout (buttons hidden).
+If either shows **`ASK OWNER`** in red, that stone has no cost recorded yet, so
+there is no safe price. Staff are told not to quote it.
 
 ---
 
-## What's tracked per diamond
-Stock number · Shape · Carat · Cut · Colour · Clarity · Lab (IGI/GIA/…) ·
-Certificate number · Price · Where it's listed (Website / Retail / Both) ·
-Status (In Stock / Reserved / Sold) · Customer & sold price when sold · Notes.
+## ⚠️ Nine stones currently have no price
+
+Items 13–21 of the old sheet had an empty **Base Cost** column, so the old file
+was calculating their minimum price as **Rp 0**. A salesperson reading that sheet
+could have given a stone away.
+
+| Stock No | Shape | Carat |
+|---|---|---|
+| VD-013 | Heart Brilliant | 2.09 |
+| VD-014 | Oval Brilliant | 1.59 |
+| VD-015 | Princess Cut | 2.10 |
+| VD-016 | Round Brilliant | 1.19 |
+| VD-017 | Round Brilliant | 1.09 |
+| VD-018 | Round Brilliant | 1.10 |
+| VD-019 | Oval Brilliant | 1.06 |
+| VD-020 | Princess Cut | 1.55 |
+| VD-021 | Princess Cut | 1.55 |
+
+They now show `ASK OWNER` instead of Rp 0. **Please fill in their Base Cost on
+the Costing tab** — that is the one thing needed before the file is complete.
+
+Also confirm the **exchange rate** on the Settings tab (still 16,000 IDR/USD
+from your original sheet). Every Rupiah price depends on it.
 
 ---
 
-## Good to know
-- **Nothing is uploaded anywhere** — your stock data stays on your own device.
-- Works offline. No subscription, no accounts.
-- To put it on the counter tablet: open the file once, then add it to the home
-  screen / bookmarks bar for one-tap access.
+## Adding new stock
+
+1. **Stock List** — next empty row: Stock No (`VD-022`…), Status, Shape, Carat,
+   Colour, Clarity, Lab, Certificate No.
+2. **Costing** — same Stock No in column A, then Purchased Date, Supplier,
+   Base Cost (USD), Adjustment.
+
+Prices appear by themselves. Rows are pre-formatted down to row 127 (120 stones);
+the dropdowns and formulas are already there.
+
+---
+
+## The optional showroom lookup
+
+`showroom-lookup.html` is a search screen for a counter tablet — type "2ct oval"
+and get it instantly, which is much faster than filtering a spreadsheet on a
+touchscreen.
+
+It is **read-only on purpose**, so it can never disagree with the master file.
+To use it: open the **Stock List** tab ▸ **File ▸ Save As ▸ CSV**, then load that
+CSV into the page. It shows how old the data is and warns you after 3 days.
+
+Reserving and selling always happens in the workbook.
+
+> An earlier draft of this project was a browser app that stored stock in the
+> browser itself. It was removed: browser storage does not sync through OneDrive,
+> so every device would have held a different stock list. One file on OneDrive is
+> the correct answer for a Family subscription.
+
+---
+
+## Formulas — unchanged from your original sheet
+
+```
+Adjusted Cost (USD) = Base Cost × (1 + Adjustment)
+RRP (USD)           = Adjusted Cost × 5
+Price per Carat     = Adjusted Cost ÷ Carat
+Adj. Cost (Rp)      = Adjusted Cost × exchange rate
+Minimum Price (Rp)  = Adj. Cost (Rp) × 2.5
+Profit (Rp)         = Price Sold − Adj. Cost (Rp)
+Margin              = Price Sold ÷ Adj. Cost (Rp)
+```
+
+One column is new: **Retail Price (Rp)** = RRP (USD) × exchange rate. Your old
+sheet quoted retail in USD but the floor in Rupiah, so staff had to convert in
+their heads. It works out to exactly 2× the minimum price.
+
+See the **Notes & Fixes** tab for the six bugs found in the old file, including
+`#VALUE!` errors on every unsold row and a hard-coded exchange rate in two cells.

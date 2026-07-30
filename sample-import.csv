@@ -1,6 +1,5 @@
-Stock No,Shape,Carat,Cut,Colour,Clarity,Lab,Certificate No,Price,Listed On,Status,Sold To,Sold Price,Sold Date,Notes
-VD-001,Round,1.02,Excellent,F,VS1,IGI,LG497412789,3200,Both,In Stock,,,,Popular size
-VD-002,Oval,1.50,Excellent,E,VVS2,IGI,LG512398441,5400,Website,In Stock,,,,
-VD-003,Emerald,2.01,Very Good,G,VS2,GIA,7361120088,8900,Retail,Reserved,,,,Held for Mr Lee until Fri
-VD-004,Cushion,1.20,Excellent,H,SI1,IGI,LG441120765,2650,Both,In Stock,,,,
-VD-005,Pear,1.75,Very Good,F,VS1,IGI,LG498120334,6100,Retail,Sold,Mrs Tan / Inv 2041,5900,2026-07-20,
+Stock No,Status,Shape,Carat,Colour,Clarity,Lab,Certificate No,Retail Price (Rp),Minimum Price (Rp),Reserved / Sold To,Price Sold (Rp),Sold Date,Notes
+VD-001,In Stock,Round Brilliant,3.08,E,VS1,IGI,LG648420044,"Rp 43,736,000","Rp 21,868,000",,,,
+VD-002,In Stock,Pear Shape,5.02,E,VS1,IGI,LG632457362,"Rp 140,272,000","Rp 70,136,000",,,,
+VD-003,Sold,Square Cut,3.01,D,VVS2,IGI,LG623445840,"Rp 82,456,000","Rp 41,228,000",Walk-in,"Rp 50,000,000",20-Oct-24,
+VD-013,In Stock,Heart Brilliant,2.09,D,VVS1,IGI,LG669456988,ASK OWNER,ASK OWNER,,,,Base cost not yet entered
