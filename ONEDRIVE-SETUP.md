@@ -17,8 +17,8 @@ calculated, so until Excel has opened it once, OneDrive's little preview pane ma
 show the price columns as blank. Opening and saving fixes that permanently.
 
 While it is open, sanity-check one row: `VD-001` should show a Retail Price of
-**Rp 43,736,000** and a Minimum Price of **Rp 21,868,000**. If you see those two
-numbers, every formula in the file is working.
+**$2,733.50** and a Minimum Price of **$1,366.75** (Rp 43,736,000 and
+Rp 21,868,000 in the reference columns). If you see those, every formula works.
 
 ### 1. Make a folder
 In OneDrive on this computer, create a folder:
@@ -90,7 +90,7 @@ you want. Or use the **magnifying glass** to search for a certificate number.
 | Open the file from OneDrive / Shared, every time | Email the file to anyone |
 | Let AutoSave save for you | Use "Save As" or "Download a copy" |
 | Type your change and move on | Keep your own version on your desktop |
-| Ask the owner if a price says **ASK OWNER** | Quote below the Minimum Price |
+| Ask the owner if a price says **ASK OWNER** | Quote below the Minimum Price (USD) |
 
 If two people edit the same cell at the same moment, Excel keeps the last one
 typed — it does not lose the row. What *does* break things is someone working

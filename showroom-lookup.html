@@ -89,7 +89,7 @@
     <div class="logo">◆</div>
     <div>
       <h1>Showroom Lookup</h1>
-      <p>Verena Jewellery — fast search for the counter</p>
+      <p>Verena Jewellery — fast search for the counter · prices in USD</p>
     </div>
     <div class="spacer"></div>
     <button class="btn btn-ghost" id="loadBtn">📂 &nbsp;Load stock file</button>
@@ -218,10 +218,10 @@
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
     });
   }
-  function rp(n){
+  function usd(n){
     if(n === "ASK") return "ASK OWNER";
     if(n == null) return "—";
-    return "Rp " + n.toLocaleString("en-US");
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
   }
 
   function ageBanner(){
@@ -307,8 +307,8 @@
       if(r.retail === "ASK" || r.min === "ASK" || (r.retail == null && r.min == null)){
         priceBlock = '<div class="askowner">⚠ ASK OWNER<br><span style="font-weight:600;font-size:11.5px">no price set — do not quote</span></div>';
       } else {
-        priceBlock = '<div class="retail">' + esc(rp(r.retail)) + '<small>retail price</small></div>' +
-                     '<div class="floor">Floor ' + esc(rp(r.min)) + '<small>never go below</small></div>';
+        priceBlock = '<div class="retail">' + esc(usd(r.retail)) + '<small>retail price</small></div>' +
+                     '<div class="floor">Floor ' + esc(usd(r.min)) + '<small>never go below</small></div>';
       }
 
       return '<div class="card' + (st === "sold" ? " sold" : "") + '">' +
