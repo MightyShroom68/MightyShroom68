@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verena Jewellery — Diamond Stock Book</title>
+<style>
+  :root{
+    --bg:#faf7f2;
+    --panel:#ffffff;
+    --ink:#20242b;
+    --muted:#6b7280;
+    --line:#e7e2d8;
+    --gold:#b8933f;
+    --gold-dark:#8f7126;
+    --green:#137a4b;
+    --green-bg:#e6f4ec;
+    --amber:#a5620a;
+    --amber-bg:#fbf0dc;
+    --grey:#5b6470;
+    --grey-bg:#eceef1;
+    --red:#b3261e;
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);
+    -webkit-text-size-adjust:100%;
+    line-height:1.45;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:16px 16px 120px}
+
+  /* Header */
+  header.app{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:14px 4px 18px;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:46px;height:46px;border-radius:12px;flex:0 0 auto;
+    background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;
+    box-shadow:var(--shadow);
+  }
+  .brand h1{font-size:20px;margin:0;letter-spacing:.2px}
+  .brand p{margin:0;color:var(--muted);font-size:13px}
+  .spacer{flex:1 1 auto}
+
+  /* Stat tiles */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 20px}
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .stat .n{font-size:26px;font-weight:700;line-height:1.1}
+  .stat .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .stat.green .n{color:var(--green)}
+  .stat.gold .n{color:var(--gold-dark)}
+
+  /* Toolbar */
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:12px;box-shadow:var(--shadow);margin-bottom:16px;position:sticky;top:8px;z-index:20;
+  }
+  .search{
+    flex:1 1 260px;display:flex;align-items:center;gap:8px;
+    background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;
+  }
+  .search:focus-within{border-color:var(--gold)}
+  .search input{border:0;outline:0;font-size:17px;width:100%;background:transparent;color:var(--ink)}
+  .search .ic{font-size:18px;color:var(--muted)}
+  select.filter{
+    font-size:15px;padding:11px 12px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);
+  }
+
+  /* Buttons */
+  button{font-family:inherit;cursor:pointer}
+  .btn{
+    border:0;border-radius:10px;padding:12px 16px;font-size:15px;font-weight:600;
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:hover{filter:brightness(1.05)}
+  .btn-ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--gold)}
+  .btn-lg{padding:14px 20px;font-size:16px}
+  .btn-sm{padding:8px 12px;font-size:13.5px;border-radius:9px}
+
+  /* Table (desktop) / Cards (mobile) */
+  .list{display:flex;flex-direction:column;gap:10px}
+  .row{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 16px;display:grid;
+    grid-template-columns: 120px 1fr auto auto;gap:14px;align-items:center;
+  }
+  .row .sku{font-weight:700;font-size:15px}
+  .row .sku small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+  .specs{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+  .chip{
+    font-size:12.5px;background:#f4f1ea;border:1px solid var(--line);
+    border-radius:999px;padding:3px 9px;color:#4b5563;white-space:nowrap;
+  }
+  .chip b{color:var(--ink)}
+  .price{font-weight:700;font-size:17px;text-align:right;white-space:nowrap}
+  .price small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+  .badge{
+    font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 11px;white-space:nowrap;text-align:center;
+  }
+  .badge.instock{background:var(--green-bg);color:var(--green)}
+  .badge.reserved{background:var(--amber-bg);color:var(--amber)}
+  .badge.sold{background:var(--grey-bg);color:var(--grey)}
+  .row-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+  .row.is-sold{opacity:.72}
+  .row.channel-web{border-left:5px solid #7aa7d8}
+  .row.channel-retail{border-left:5px solid #cbb46a}
+  .row.channel-both{border-left:5px solid #9d7ad8}
+
+  .empty{
+    text-align:center;padding:60px 20px;color:var(--muted);
+    background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);
+  }
+  .empty .big{font-size:40px;margin-bottom:8px}
+
+  /* Modal */
+  .overlay{
+    position:fixed;inset:0;background:rgba(20,20,25,.5);display:none;
+    align-items:flex-start;justify-content:center;padding:20px;z-index:100;overflow:auto;
+  }
+  .overlay.open{display:flex}
+  .modal{
+    background:var(--panel);border-radius:18px;max-width:640px;width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto;
+  }
+  .modal h2{margin:0;padding:20px 22px;border-bottom:1px solid var(--line);font-size:19px}
+  .modal .body{padding:20px 22px}
+  .modal .foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;color:#374151}
+  .field .hint{font-weight:500;color:var(--muted);font-size:12px}
+  .field input,.field select,.field textarea{
+    width:100%;font-size:16px;padding:12px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--gold)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 14px}
+
+  .menu-wrap{position:relative}
+  .menu{
+    position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);
+    border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15);padding:6px;display:none;z-index:30;min-width:220px;
+  }
+  .menu.open{display:block}
+  .menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:9px;font-size:14.5px;color:var(--ink)}
+  .menu button:hover{background:#f4f1ea}
+  .menu hr{border:0;border-top:1px solid var(--line);margin:5px 4px}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:#20242b;color:#fff;padding:13px 20px;border-radius:12px;font-size:15px;font-weight:600;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:90vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .count-line{color:var(--muted);font-size:13.5px;margin:2px 4px 12px}
+
+  @media (max-width:760px){
+    .stats{grid-template-columns:1fr 1fr}
+    .row{grid-template-columns:1fr;gap:10px}
+    .price{text-align:left}
+    .row-actions{justify-content:flex-start}
+    .badge{justify-self:start}
+    .grid2,.grid3{grid-template-columns:1fr}
+    .brand h1{font-size:18px}
+    .toolbar{position:static}
+  }
+
+  /* Print: clean inventory sheet */
+  @media print{
+    .toolbar,.row-actions,header.app .spacer,.no-print,.overlay,.toast{display:none !important}
+    body{background:#fff}
+    .row{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+    .wrap{padding:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app">
+    <div class="brand">
+      <div class="logo">◆</div>
+      <div>
+        <h1>Verena Jewellery</h1>
+        <p>Diamond Stock Book</p>
+      </div>
+    </div>
+    <div class="spacer no-print"></div>
+    <div class="menu-wrap no-print">
+      <button class="btn btn-ghost" id="moreBtn">☰ &nbsp;More</button>
+      <div class="menu" id="moreMenu">
+        <button data-act="import">⬆️ &nbsp;Bring in my Excel file</button>
+        <button data-act="export">⬇️ &nbsp;Save a backup (Excel/CSV)</button>
+        <button data-act="print">🖨️ &nbsp;Print stock list</button>
+        <hr/>
+        <button data-act="sample">✨ &nbsp;Load example diamonds</button>
+        <button data-act="clear" style="color:var(--red)">🗑️ &nbsp;Delete everything</button>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg no-print" id="addBtn">＋ &nbsp;Add Diamond</button>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="toolbar no-print">
+    <label class="search">
+      <span class="ic">🔍</span>
+      <input id="search" type="search" placeholder="Search stock no., shape, certificate, customer…" autocomplete="off" />
+    </label>
+    <select class="filter" id="filterStatus">
+      <option value="">All statuses</option>
+      <option value="In Stock">🟢 In Stock</option>
+      <option value="Reserved">🟠 Reserved</option>
+      <option value="Sold">⚪ Sold</option>
+    </select>
+    <select class="filter" id="filterChannel">
+      <option value="">All locations</option>
+      <option value="Website">Website</option>
+      <option value="Retail">Retail shop</option>
+      <option value="Both">Both</option>
+    </select>
+  </div>
+
+  <div class="count-line no-print" id="countLine"></div>
+  <div class="list" id="list"></div>
+</div>
+
+<!-- Add / Edit modal -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <h2 id="formTitle">Add Diamond</h2>
+    <div class="body">
+      <div class="field">
+        <label>Stock number <span class="hint">— your own label, e.g. VD-001</span></label>
+        <input id="f_sku" placeholder="VD-001" />
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label>Shape</label>
+          <select id="f_shape">
+            <option>Round</option><option>Oval</option><option>Princess</option>
+            <option>Cushion</option><option>Emerald</option><option>Pear</option>
+            <option>Radiant</option><option>Marquise</option><option>Asscher</option>
+            <option>Heart</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Carat <span class="hint">(size)</span></label>
+          <input id="f_carat" type="number" step="0.01" inputmode="decimal" placeholder="1.00" />
+        </div>
+        <div class="field">
+          <label>Cut</label>
+          <select id="f_cut">
+            <option value="">—</option>
+            <option>Excellent</option><option>Very Good</option><option>Good</option><option>Fair</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label>Colour</label>
+          <select id="f_color">
+            <option value="">—</option>
+            <option>D</option><option>E</option><option>F</option><option>G</option>
+            <option>H</option><option>I</option><option>J</option><option>K</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Clarity</label>
+          <select id="f_clarity">
+            <option value="">—</option>
+            <option>FL</option><option>IF</option><option>VVS1</option><option>VVS2</option>
+            <option>VS1</option><option>VS2</option><option>SI1</option><option>SI2</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Lab</label>
+          <select id="f_lab">
+            <option>IGI</option><option>GIA</option><option>GCAL</option><option>Other</option><option value="">None</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Certificate number <span class="hint">(optional)</span></label>
+        <input id="f_cert" placeholder="e.g. LG123456789" />
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Price</label>
+          <input id="f_price" type="number" step="0.01" inputmode="decimal" placeholder="0.00" />
+        </div>
+        <div class="field">
+          <label>Where is it listed?</label>
+          <select id="f_channel">
+            <option>Both</option><option>Website</option><option>Retail</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes <span class="hint">(optional)</span></label>
+        <textarea id="f_notes" rows="2" placeholder="Anything worth remembering…"></textarea>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="saveBtn">Save Diamond</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sell / Reserve modal -->
+<div class="overlay" id="sellOverlay">
+  <div class="modal">
+    <h2 id="sellTitle">Mark as Sold</h2>
+    <div class="body">
+      <p id="sellSub" style="margin-top:0;color:var(--muted)"></p>
+      <div class="grid2">
+        <div class="field">
+          <label>Sold price <span class="hint">(optional)</span></label>
+          <input id="s_price" type="number" step="0.01" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input id="s_date" type="date" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Customer name / reference <span class="hint">(optional)</span></label>
+        <input id="s_customer" placeholder="e.g. Mrs Tan / Invoice 2043" />
+      </div>
+      <div class="field">
+        <label>Sold through</label>
+        <select id="s_channel">
+          <option>Retail shop</option><option>Website</option>
+        </select>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn btn-ghost" data-close>Cancel</button>
+      <button class="btn btn-primary" id="confirmSell">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept=".csv,.txt" style="display:none" />
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "verena_diamonds_v1";
+  var db = [];        // array of diamond objects
+  var editingId = null;
+  var sellId = null, sellMode = "Sold";
+
+  /* ---------- storage ---------- */
+  function load(){
+    try{ db = JSON.parse(localStorage.getItem(KEY)) || []; }
+    catch(e){ db = []; }
+  }
+  function save(){
+    localStorage.setItem(KEY, JSON.stringify(db));
+  }
+  function uid(){ return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+  /* ---------- helpers ---------- */
+  function money(v){
+    if(v===""||v==null||isNaN(v)) return "—";
+    return Number(v).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});
+  }
+  function esc(s){
+    return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function toast(msg){
+    var t=document.getElementById("toast");
+    t.textContent=msg;t.classList.add("show");
+    clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show");},2200);
+  }
+  function statusClass(s){
+    return s==="Sold"?"sold":s==="Reserved"?"reserved":"instock";
+  }
+  function channelClass(c){
+    return c==="Website"?"channel-web":c==="Retail"?"channel-retail":"channel-both";
+  }
+  function todayISO(){ return new Date().toISOString().slice(0,10); }
+
+  /* ---------- render ---------- */
+  function renderStats(){
+    var inStock=0, reserved=0, value=0, soldMonth=0;
+    var ym = new Date().toISOString().slice(0,7);
+    db.forEach(function(d){
+      if(d.status==="In Stock"){ inStock++; value += Number(d.price)||0; }
+      else if(d.status==="Reserved"){ reserved++; value += Number(d.price)||0; }
+      else if(d.status==="Sold"){
+        if((d.soldDate||"").slice(0,7)===ym) soldMonth++;
+      }
+    });
+    var el=document.getElementById("stats");
+    el.innerHTML =
+      tile("green", inStock, "In stock") +
+      tile("", reserved, "Reserved") +
+      tile("", soldMonth, "Sold this month") +
+      tile("gold", money(value), "Stock value");
+  }
+  function tile(cls,n,l){
+    return '<div class="stat '+cls+'"><div class="n">'+esc(n)+'</div><div class="l">'+esc(l)+'</div></div>';
+  }
+
+  function currentFilters(){
+    return {
+      q: document.getElementById("search").value.trim().toLowerCase(),
+      status: document.getElementById("filterStatus").value,
+      channel: document.getElementById("filterChannel").value
+    };
+  }
+
+  function matches(d,f){
+    if(f.status && d.status!==f.status) return false;
+    if(f.channel && d.channel!==f.channel) return false;
+    if(f.q){
+      var hay=[d.sku,d.shape,d.carat,d.color,d.clarity,d.cut,d.cert,d.lab,d.notes,d.customer,d.price]
+        .join(" ").toLowerCase();
+      if(hay.indexOf(f.q)===-1) return false;
+    }
+    return true;
+  }
+
+  function render(){
+    renderStats();
+    var f=currentFilters();
+    var list=document.getElementById("list");
+    var rows=db.filter(function(d){return matches(d,f);});
+    // sort: In Stock, Reserved, Sold; then newest first
+    var order={"In Stock":0,"Reserved":1,"Sold":2};
+    rows.sort(function(a,b){
+      var s=(order[a.status]||0)-(order[b.status]||0);
+      if(s!==0) return s;
+      return (b.added||"").localeCompare(a.added||"");
+    });
+
+    document.getElementById("countLine").textContent =
+      rows.length + (rows.length===1?" diamond":" diamonds") +
+      (db.length!==rows.length ? " shown ("+db.length+" total)" : "");
+
+    if(rows.length===0){
+      list.innerHTML='<div class="empty"><div class="big">💎</div>'+
+        (db.length===0
+          ? "<b>No diamonds yet.</b><br>Tap <b>Add Diamond</b> to enter your first one,<br>or use <b>More → Bring in my Excel file</b>."
+          : "No diamonds match your search.")+
+        "</div>";
+      return;
+    }
+
+    list.innerHTML = rows.map(function(d){
+      var specs=[];
+      if(d.carat) specs.push('<span class="chip"><b>'+esc(d.carat)+'ct</b></span>');
+      if(d.color) specs.push('<span class="chip">Colour <b>'+esc(d.color)+'</b></span>');
+      if(d.clarity) specs.push('<span class="chip">'+esc(d.clarity)+'</span>');
+      if(d.cut) specs.push('<span class="chip">'+esc(d.cut)+' cut</span>');
+      if(d.lab||d.cert) specs.push('<span class="chip">'+esc(d.lab||"Cert")+(d.cert?' '+esc(d.cert):'')+'</span>');
+      specs.push('<span class="chip">'+esc(d.channel)+'</span>');
+      if(d.status==="Sold" && d.customer) specs.push('<span class="chip">Sold to <b>'+esc(d.customer)+'</b></span>');
+
+      var actions;
+      if(d.status==="Sold"){
+        actions='<button class="btn btn-ghost btn-sm" data-edit="'+d.id+'">Edit</button>'+
+                '<button class="btn btn-ghost btn-sm" data-restock="'+d.id+'">Back in stock</button>';
+      }else{
+        actions='<button class="btn btn-primary btn-sm" data-sell="'+d.id+'">Mark Sold</button>'+
+                (d.status==="Reserved"
+                  ? '<button class="btn btn-ghost btn-sm" data-unreserve="'+d.id+'">Un-reserve</button>'
+                  : '<button class="btn btn-ghost btn-sm" data-reserve="'+d.id+'">Reserve</button>')+
+                '<button class="btn btn-ghost btn-sm" data-edit="'+d.id+'">Edit</button>';
+      }
+
+      return '<div class="row '+(d.status==="Sold"?"is-sold ":"")+channelClass(d.channel)+'">'+
+        '<div class="sku">'+esc(d.sku||"—")+'<small>'+esc(d.shape||"")+'</small></div>'+
+        '<div class="specs">'+specs.join("")+'</div>'+
+        '<div class="price">'+money(d.price)+'<small>'+
+          '<span class="badge '+statusClass(d.status)+'">'+esc(d.status)+'</span></small></div>'+
+        '<div class="row-actions">'+actions+'</div>'+
+        '</div>';
+    }).join("");
+  }
+
+  /* ---------- add / edit ---------- */
+  function openForm(id){
+    editingId = id || null;
+    var d = id ? db.find(function(x){return x.id===id;}) : null;
+    document.getElementById("formTitle").textContent = d ? "Edit Diamond" : "Add Diamond";
+    setV("f_sku", d?d.sku:"");
+    setV("f_shape", d?d.shape:"Round");
+    setV("f_carat", d?d.carat:"");
+    setV("f_cut", d?d.cut:"");
+    setV("f_color", d?d.color:"");
+    setV("f_clarity", d?d.clarity:"");
+    setV("f_lab", d?d.lab:"IGI");
+    setV("f_cert", d?d.cert:"");
+    setV("f_price", d?d.price:"");
+    setV("f_channel", d?d.channel:"Both");
+    setV("f_notes", d?d.notes:"");
+    openOverlay("formOverlay");
+    setTimeout(function(){document.getElementById("f_sku").focus();},50);
+  }
+  function saveForm(){
+    var rec = {
+      sku:getV("f_sku").trim(), shape:getV("f_shape"), carat:getV("f_carat").trim(),
+      cut:getV("f_cut"), color:getV("f_color"), clarity:getV("f_clarity"),
+      lab:getV("f_lab"), cert:getV("f_cert").trim(), price:getV("f_price").trim(),
+      channel:getV("f_channel"), notes:getV("f_notes").trim()
+    };
+    if(!rec.sku && !rec.carat){ toast("Please enter at least a stock number or carat"); return; }
+    if(editingId){
+      var d=db.find(function(x){return x.id===editingId;});
+      Object.assign(d,rec);
+      toast("Saved");
+    }else{
+      rec.id=uid(); rec.status="In Stock"; rec.added=new Date().toISOString();
+      rec.soldDate=""; rec.customer=""; rec.soldPrice="";
+      db.unshift(rec);
+      toast("Diamond added");
+    }
+    save(); render(); closeOverlays();
+  }
+
+  /* ---------- sell / reserve ---------- */
+  function openSell(id){
+    sellId=id; sellMode="Sold";
+    var d=db.find(function(x){return x.id===id;});
+    document.getElementById("sellTitle").textContent="Mark as Sold";
+    document.getElementById("sellSub").textContent=(d.sku||"Diamond")+" · "+(d.carat?d.carat+"ct ":"")+(d.shape||"");
+    setV("s_price", d.price||"");
+    setV("s_date", todayISO());
+    setV("s_customer","");
+    setV("s_channel", d.channel==="Website"?"Website":"Retail shop");
+    openOverlay("sellOverlay");
+  }
+  function confirmSell(){
+    var d=db.find(function(x){return x.id===sellId;});
+    if(!d) return;
+    d.status="Sold";
+    d.soldPrice=getV("s_price").trim();
+    d.soldDate=getV("s_date")||todayISO();
+    d.customer=getV("s_customer").trim();
+    d.soldChannel=getV("s_channel");
+    save(); render(); closeOverlays();
+    toast("Marked as sold ✓");
+  }
+
+  /* ---------- quick actions ---------- */
+  function setStatus(id,status,msg){
+    var d=db.find(function(x){return x.id===id;});
+    if(!d) return;
+    d.status=status;
+    if(status==="In Stock"){ d.soldDate="";d.customer="";d.soldPrice="";d.soldChannel=""; }
+    save(); render(); toast(msg);
+  }
+
+  /* ---------- CSV import / export ---------- */
+  var COLS=[
+    ["sku","Stock No"],["shape","Shape"],["carat","Carat"],["cut","Cut"],
+    ["color","Colour"],["clarity","Clarity"],["lab","Lab"],["cert","Certificate No"],
+    ["price","Price"],["channel","Listed On"],["status","Status"],
+    ["customer","Sold To"],["soldPrice","Sold Price"],["soldDate","Sold Date"],["notes","Notes"]
+  ];
+  function exportCSV(){
+    if(db.length===0){ toast("Nothing to save yet"); return; }
+    var head=COLS.map(function(c){return c[1];});
+    var lines=[head.map(csvCell).join(",")];
+    db.forEach(function(d){
+      lines.push(COLS.map(function(c){return csvCell(d[c[0]]==null?"":d[c[0]]);}).join(","));
+    });
+    var blob=new Blob(["﻿"+lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="Verena-Diamonds-"+todayISO()+".csv";
+    a.click();
+    toast("Backup saved — opens in Excel");
+  }
+  function csvCell(v){
+    v=String(v);
+    if(/[",\r\n]/.test(v)) return '"'+v.replace(/"/g,'""')+'"';
+    return v;
+  }
+  function parseCSV(text){
+    var rows=[],row=[],cur="",i=0,q=false,ch;
+    text=text.replace(/^﻿/,"");
+    while(i<text.length){
+      ch=text[i];
+      if(q){
+        if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; }
+        else cur+=ch;
+      }else{
+        if(ch==='"') q=true;
+        else if(ch===","){ row.push(cur);cur=""; }
+        else if(ch==="\n"){ row.push(cur);rows.push(row);row=[];cur=""; }
+        else if(ch==="\r"){ /* skip */ }
+        else cur+=ch;
+      }
+      i++;
+    }
+    if(cur!==""||row.length){ row.push(cur);rows.push(row); }
+    return rows.filter(function(r){return r.some(function(c){return c.trim()!=="";});});
+  }
+  function importCSV(text){
+    var rows=parseCSV(text);
+    if(rows.length<1){ toast("That file looks empty"); return; }
+    var header=rows[0].map(function(h){return h.trim().toLowerCase();});
+    // map header -> our field, by fuzzy label match
+    function findCol(){
+      var names=[].slice.call(arguments);
+      for(var j=0;j<header.length;j++){
+        for(var k=0;k<names.length;k++){
+          if(header[j].indexOf(names[k])!==-1) return j;
+        }
+      }
+      return -1;
+    }
+    var map={
+      sku:findCol("stock","sku","item","id","ref"),
+      shape:findCol("shape","cut shape"),
+      carat:findCol("carat","weight","size","ct"),
+      cut:findCol("cut grade","cut"),
+      color:findCol("colour","color"),
+      clarity:findCol("clarity"),
+      lab:findCol("lab","grader"),
+      cert:findCol("cert","report"),
+      price:findCol("price","cost","amount"),
+      channel:findCol("listed","channel","location","where"),
+      status:findCol("status","state"),
+      customer:findCol("sold to","customer","buyer"),
+      soldPrice:findCol("sold price"),
+      soldDate:findCol("sold date","date sold"),
+      notes:findCol("note","remark","comment")
+    };
+    var added=0;
+    for(var r=1;r<rows.length;r++){
+      var cells=rows[r];
+      function g(key){ var idx=map[key]; return idx>=0 && cells[idx]!=null ? String(cells[idx]).trim() : ""; }
+      var rec={
+        id:uid(), sku:g("sku"), shape:g("shape")||"Round", carat:g("carat"),
+        cut:g("cut"), color:g("color"), clarity:g("clarity"), lab:g("lab")||"IGI",
+        cert:g("cert"), price:cleanNum(g("price")), notes:g("notes"),
+        customer:g("customer"), soldPrice:cleanNum(g("soldPrice")), soldDate:g("soldDate"),
+        added:new Date().toISOString()
+      };
+      var ch=g("channel").toLowerCase();
+      rec.channel = ch.indexOf("web")!==-1 ? "Website" : ch.indexOf("retail")!==-1||ch.indexOf("shop")!==-1||ch.indexOf("store")!==-1 ? "Retail" : "Both";
+      var st=g("status").toLowerCase();
+      rec.status = st.indexOf("sold")!==-1 ? "Sold" : st.indexOf("reserv")!==-1||st.indexOf("hold")!==-1 ? "Reserved" : "In Stock";
+      if(!rec.sku && !rec.carat && !rec.cert) continue; // skip blank
+      db.unshift(rec); added++;
+    }
+    save(); render();
+    toast(added+" diamond"+(added===1?"":"s")+" brought in");
+  }
+  function cleanNum(s){ return String(s).replace(/[^0-9.]/g,""); }
+
+  /* ---------- sample data ---------- */
+  function loadSample(){
+    var s=[
+      {sku:"VD-001",shape:"Round",carat:"1.02",cut:"Excellent",color:"F",clarity:"VS1",lab:"IGI",cert:"LG497412789",price:"3200",channel:"Both",status:"In Stock",notes:"Popular size"},
+      {sku:"VD-002",shape:"Oval",carat:"1.50",cut:"Excellent",color:"E",clarity:"VVS2",lab:"IGI",cert:"LG512398441",price:"5400",channel:"Website",status:"In Stock",notes:""},
+      {sku:"VD-003",shape:"Emerald",carat:"2.01",cut:"Very Good",color:"G",clarity:"VS2",lab:"GIA",cert:"7361120088",price:"8900",channel:"Retail",status:"Reserved",notes:"Held for Mr Lee until Fri"},
+      {sku:"VD-004",shape:"Cushion",carat:"1.20",cut:"Excellent",color:"H",clarity:"SI1",lab:"IGI",cert:"LG441120765",price:"2650",channel:"Both",status:"In Stock",notes:""},
+      {sku:"VD-005",shape:"Pear",carat:"1.75",cut:"Very Good",color:"F",clarity:"VS1",lab:"IGI",cert:"LG498120334",price:"6100",channel:"Retail",status:"Sold",customer:"Mrs Tan / Inv 2041",soldPrice:"5900",soldDate:todayISO(),notes:""}
+    ];
+    s.forEach(function(r){ r.id=uid(); r.added=new Date().toISOString(); if(!r.customer)r.customer=""; db.unshift(r); });
+    save(); render(); toast("Example diamonds loaded");
+  }
+
+  /* ---------- overlay utils ---------- */
+  function openOverlay(id){ document.getElementById(id).classList.add("open"); }
+  function closeOverlays(){
+    document.querySelectorAll(".overlay").forEach(function(o){o.classList.remove("open");});
+  }
+  function setV(id,v){ document.getElementById(id).value = v==null?"":v; }
+  function getV(id){ return document.getElementById(id).value; }
+
+  /* ---------- events ---------- */
+  document.getElementById("addBtn").onclick=function(){openForm(null);};
+  document.getElementById("saveBtn").onclick=saveForm;
+  document.getElementById("confirmSell").onclick=confirmSell;
+  ["search","filterStatus","filterChannel"].forEach(function(id){
+    document.getElementById(id).addEventListener("input",render);
+  });
+
+  document.body.addEventListener("click",function(e){
+    var t=e.target.closest("[data-close]"); if(t){ closeOverlays(); return; }
+    var el;
+    if(el=e.target.closest("[data-edit]")) return openForm(el.getAttribute("data-edit"));
+    if(el=e.target.closest("[data-sell]")) return openSell(el.getAttribute("data-sell"));
+    if(el=e.target.closest("[data-reserve]")) return setStatus(el.getAttribute("data-reserve"),"Reserved","Reserved 🟠");
+    if(el=e.target.closest("[data-unreserve]")) return setStatus(el.getAttribute("data-unreserve"),"In Stock","Back in stock 🟢");
+    if(el=e.target.closest("[data-restock]")) return setStatus(el.getAttribute("data-restock"),"In Stock","Back in stock 🟢");
+  });
+  // close overlay by clicking backdrop
+  document.querySelectorAll(".overlay").forEach(function(o){
+    o.addEventListener("click",function(e){ if(e.target===o) closeOverlays(); });
+  });
+
+  /* More menu */
+  var moreBtn=document.getElementById("moreBtn"), moreMenu=document.getElementById("moreMenu");
+  moreBtn.onclick=function(e){ e.stopPropagation(); moreMenu.classList.toggle("open"); };
+  document.addEventListener("click",function(){ moreMenu.classList.remove("open"); });
+  moreMenu.addEventListener("click",function(e){
+    var b=e.target.closest("[data-act]"); if(!b) return;
+    var act=b.getAttribute("data-act");
+    moreMenu.classList.remove("open");
+    if(act==="import") document.getElementById("fileInput").click();
+    else if(act==="export") exportCSV();
+    else if(act==="print") window.print();
+    else if(act==="sample"){
+      if(db.length && !confirm("Add example diamonds to your current list?")) return;
+      loadSample();
+    }
+    else if(act==="clear"){
+      if(confirm("Delete ALL diamonds? Save a backup first if you're not sure. This cannot be undone.")){
+        db=[];save();render();toast("All cleared");
+      }
+    }
+  });
+  document.getElementById("fileInput").addEventListener("change",function(e){
+    var file=e.target.files[0]; if(!file) return;
+    var rd=new FileReader();
+    rd.onload=function(){ importCSV(rd.result); };
+    rd.readAsText(file);
+    e.target.value="";
+  });
+
+  // Esc closes
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeOverlays(); });
+
+  /* ---------- start ---------- */
+  load(); render();
+})();
+</script>
+</body>
+</html>
