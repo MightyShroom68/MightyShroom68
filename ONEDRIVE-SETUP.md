@@ -109,11 +109,12 @@ the link", or a forwarded link hands a competitor your supplier prices and
 margins. When someone leaves, remove their access: right-click the folder ▸
 **Manage access**.
 
-**2. Sheet protection has no password.**
-The grey calculated columns are locked so the formulas cannot be damaged, but it
-unlocks via Review ▸ Unprotect Sheet with no password — nothing stops a
-determined person. Add a password if you want, and keep a note of it somewhere
-safe.
+**2. Nothing in the file is locked.**
+Every cell is editable, on purpose — protection got in the way of people doing
+their job. The cost is that someone can type over a formula. The colour coding
+warns them (grey = calculated), and Version history below is the safety net.
+Don't add a password unless you have a specific reason; it tends to block the
+people who need the file most, especially on phones.
 
 **3. Editing on a big tablet may ask for a subscription.**
 The Excel app edits for free on phones. On an iPad or a large Android tablet,

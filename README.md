@@ -14,6 +14,43 @@ the website team work from one list, on a computer or a phone.
 
 ---
 
+## Nothing is locked
+
+There is no password and no protection on any sheet. Type in any cell, add
+stones, change any price. The colour of a heading tells you what a column does:
+
+| Heading colour | Meaning |
+|---|---|
+| **Gold** | The columns you type in most — Your Price, Set Into / Frame, Notes, Base Cost |
+| Green | Other things you type — status, specs, sale details |
+| Dark green | The two prices staff quote — calculated |
+| Grey | Works itself out — a formula |
+
+If you type over a grey column you replace its formula for that stone. To repair
+it: copy the same cell from the row above and paste it back, or use Undo. If it
+already saved, OneDrive keeps **Version history** (right-click the file on
+onedrive.com) — that's your real undo.
+
+---
+
+## Where do I type?
+
+The **Stock and Costing** tab has a gold line above the headings naming the exact
+column for each job:
+
+| I want to… | Column |
+|---|---|
+| Change a price | **L — `Your Price (USD)`** |
+| Add a comment | **N — `Notes`** |
+| Note a stone set into a mount | **M — `Set Into / Frame`** |
+| Fill in a missing cost | **R — `Base Cost (USD)`** |
+| Mark something sold | **C — `Status`** |
+
+Everything you type regularly is now within the first 18 columns. Cost workings
+and profit analysis sit off to the right, out of the way.
+
+---
+
 ## Setting a price — the answer to "how do I add prices?"
 
 Four columns work together on the **Stock and Costing** tab:
@@ -21,7 +58,7 @@ Four columns work together on the **Stock and Costing** tab:
 | Column | What it does |
 |---|---|
 | `Suggested Price (USD)` | Automatic: adjusted cost × 5, exactly as your original sheet. |
-| **`Your Price (USD)`** | **Type your own price here.** Cream = you type. |
+| **`Your Price (USD)`** | **Type your own price here** — column L, gold heading. |
 | `Retail Price (USD)` | The price in force — what staff quote and customers see. |
 | `Minimum Price (USD)` | The floor: adjusted cost × 2.5. |
 
@@ -59,7 +96,7 @@ in USD instead.
 
 | Tab | Purpose |
 |---|---|
-| **Stock and Costing** | Every stone, one row. Specs, prices, cost, profit, margin. All typing happens here. Cream = type; grey = calculated; green = the two prices staff use. |
+| **Stock and Costing** | Every stone, one row. Specs, prices, cost, profit, margin. All typing happens here. Gold headings = what you type most; grey = calculated. |
 | **Customer View** | Same stones, with cost, minimum price and margin stripped out. Price in USD with Rupiah beside it. Show or print **this** for customers. |
 | **Profit Summary** | Cost tied up, revenue, profit, margin, best/weakest sale, per-supplier breakdown — USD with Rupiah alongside. |
 | **Settings** | Exchange rate, the two multipliers, and the dropdown lists. |
@@ -123,7 +160,16 @@ One row on **Stock and Costing**:
 > Certificate No, Purchased Date, Supplier, Base Cost (USD), Adjustment —
 > plus `Your Price (USD)` if you already know what it should sell for.
 
-Everything else follows automatically. Rows are ready down to row 127.
+Everything else follows automatically — the Customer View row and the Profit
+Summary update themselves. **You don't need to insert rows**; the next empty row
+already has every formula and dropdown. There's room for **200 stones** (to row
+207). When you need more, copy the last row and paste it into the rows below.
+
+Changing availability is just the **Status** column: In Stock → Reserved → Sold.
+
+The dropdowns are a shortcut, not a rule — if a new shape isn't listed, type it
+in anyway. To make it permanent, add it to the bottom of that column on
+**Settings**.
 
 ---
 
