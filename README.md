@@ -3,7 +3,9 @@
 Replaces `2026_LGD_Costing.xlsx`. Built to live on **OneDrive** so the shop and
 the website team work from one list, on a computer or a phone.
 
-**Prices are in US dollars. Rupiah is a reference conversion only.**
+**Customers pay in Rupiah. Costs are in US dollars.** You can set a price in
+either currency, and whichever you type is the real price — it never moves when
+the exchange rate changes.
 
 | File | What it is | Who uses it |
 |---|---|---|
@@ -40,9 +42,10 @@ column for each job:
 
 | I want to… | Column |
 |---|---|
-| Change a price | **L — `Your Price (USD)`** |
-| Add a comment | **N — `Notes`** |
-| Note a stone set into a mount | **M — `Set Into / Frame`** |
+| Set the Rupiah selling price | **N — `Your Price (Rp)`** |
+| Set it in dollars instead | **O — `Your Price (USD)`** |
+| Add a comment | **P — `Notes`** |
+| Note a stone set into a mount | **Q — `Set Into / Frame`** |
 | Fill in a missing cost | **R — `Base Cost (USD)`** |
 | Mark something sold | **C — `Status`** |
 
@@ -58,13 +61,15 @@ Four columns work together on the **Stock and Costing** tab:
 | Column | What it does |
 |---|---|
 | `Suggested Price (USD)` | Automatic: adjusted cost × 5, exactly as your original sheet. |
-| **`Your Price (USD)`** | **Type your own price here** — column L, gold heading. |
-| `Retail Price (USD)` | The price in force — what staff quote and customers see. |
-| `Minimum Price (USD)` | The floor: adjusted cost × 2.5. |
+| **`Your Price (Rp)`** | **Type the Rupiah price here** — column N, gold heading. |
+| **`Your Price (USD)`** | Or set it in dollars — column O. |
+| `Retail Price (Rp)` / `(USD)` | The price in force — what staff quote and customers see. |
+| `Minimum Price (Rp)` / `(USD)` | The floor: adjusted cost × 2.5. |
 
-- **Leave `Your Price` empty** → the stone is priced automatically at cost × 5.
-- **Type a number into `Your Price`** → that becomes the Retail Price immediately.
-  The Rupiah column, the Customer View and the Profit Summary all follow.
+- **Leave both `Your Price` columns empty** → priced automatically at cost × 5.
+- **Type into `Your Price (Rp)`** → that exact Rupiah figure becomes the Retail
+  Price, permanently, and the USD column shows today's equivalent.
+- **Type into `Your Price (USD)`** → same the other way round.
 - **Delete what you typed** → back to the automatic price.
 - **Type below the Minimum** → the cell turns red, and the Profit Summary counts
   how many stones are below their floor.
@@ -76,19 +81,31 @@ you know it.
 
 ---
 
-## Currency
+## Currency — and why a set price never drifts
 
-Every price, cost and profit figure is in **USD**. Beside each is a Rupiah
-column, converted at the rate on the **Settings** tab, marked as reference.
+Your costs are in USD (that's how you buy). Your customers pay in Rupiah.
+Both are first-class here:
 
-A useful consequence: **your USD prices no longer depend on the exchange rate.**
-In the old sheet a stale rate silently changed the minimum price you'd accept.
-Now the rate only moves the reference columns.
+| Column | |
+|---|---|
+| **`Your Price (Rp)`** | The Rupiah price the customer actually pays. **Type it and it is fixed** — changing the rate on Settings will not move it. |
+| **`Your Price (USD)`** | Set the price in dollars instead, if that's how you think about it. |
+| `Retail Price (Rp)` / `(USD)` | The prices in force — what staff quote and the Customer View shows. |
+
+The rule: **whichever currency you type in becomes the real price.** The other
+one is worked out at the current rate. If you type neither, both come from
+cost × 5.
+
+So for a stone with a Rupiah price tag on it, type the Rupiah figure into
+`Your Price (Rp)`. That number is then yours permanently — no rate change,
+now or in a year, can alter it.
 
 **Recording a sale** stays in Rupiah — `Price Sold (Rp)` — because that is what
-the shop actually takes and how your five existing sales are recorded.
-`Price Sold (USD)` converts automatically. Say the word if you'd rather type sales
-in USD instead.
+the shop actually takes. `Price Sold (USD)` converts automatically.
+
+**The minimum price does still move with the rate**, and that is deliberate:
+it is your cost × 2.5, and your cost is genuinely in dollars. If the rupiah
+weakens, the Rupiah figure you must clear to stay profitable really does rise.
 
 ---
 
@@ -112,6 +129,25 @@ teach them: **show customers the Customer View tab.**
 |---|---|---|
 | **Margin (Cost to Revenue)** — yours, unchanged | Price Sold ÷ Cost | **740%** (sold for 7.4× cost) |
 | **Profit Margin %** — new | (Price Sold − Cost) ÷ Price Sold | **86.5%** (86.5¢ of every dollar is profit) |
+
+---
+
+## Your original data is untouched
+
+Every figure from `2026_LGD_Costing.xlsx` was compared field by field against
+this workbook — purchase dates, shapes, carats, colours, clarities, certificate
+numbers, suppliers, statuses, base costs, adjustments and all five recorded sale
+amounts. **Nothing differs.** The Rupiah cost and minimum-price figures compute
+to exactly the same numbers as your original (VD-001 → Rp 8,747,200 cost and
+Rp 21,868,000 minimum, and so on for all 21 stones).
+
+Two cosmetic edits I had made — `SOLD` → `Sold`, and `Marquies Shape` →
+`Marquise Shape` — have been **reverted**. Your spellings stand exactly as you
+typed them. Totals are unaffected either way, because Excel matches text without
+regard to case.
+
+> The shape dropdown still offers the corrected spelling "Marquise Shape". If you
+> ever want the two old rows standardised, say so — I won't change them otherwise.
 
 ---
 
