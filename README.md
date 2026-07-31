@@ -11,6 +11,7 @@ what we pay the supplier.
 | **`Verena-Diamond-Stock.xlsx`** | The stock book. **The only place stock is recorded.** | Everyone |
 | **`ONEDRIVE-SETUP.md`** | How to put it on OneDrive and open it on a phone | Owner, once |
 | `showroom-lookup.html` | Optional fast search for a counter tablet — **look-up only** | Sales, optional |
+| **`LIVE-RATE.md`** | Connecting the USD rate to a live feed (2 minutes) | Owner, once |
 | `sample-import.csv` | Example of the column layout | Reference |
 
 ---
@@ -45,6 +46,7 @@ column for each job:
 | Add a comment | **M — `Notes`** |
 | Note a stone set into a mount | **N — `Set Into / Frame`** |
 | Fill in a supplier cost (USD) | **O — `Base Cost (USD)`** |
+| Lock a stone's exchange rate | **P — `Rate Used (IDR/USD)`** |
 | Mark something sold | **C — `Status`**, then **Q — `Price Sold (Rp)`** |
 
 Everything you type regularly is now within the first 18 columns. Cost workings
@@ -93,10 +95,25 @@ converts the supplier cost into Rupiah at the Settings rate so profit and margin
 can compare the Rupiah you took against the Rupiah that stone cost you. That is
 precisely what your original sheet did.
 
-**Changing the exchange rate** re-converts supplier costs only. A selling price
-you typed into `Your Price (Rp)` never moves. The Minimum Price does shift with
-the rate — deliberately, because your cost really is incurred in dollars, so
-the Rupiah figure you must clear to stay profitable genuinely changes.
+### The rate can be live, and history stays frozen
+
+Each stone carries its own **`Rate Used (IDR/USD)`** (column P). All 21 existing
+stones are locked at **16,000** — the rate their figures were built on — so
+changing the live rate on Settings **cannot move a finished sale**.
+
+Without that lock, switching to today's rate would have cut your recorded profit
+by **Rp 5,359,563** on sales already banked. Now:
+
+| | |
+|---|---|
+| Existing stones (`Rate Used` = 16,000) | frozen — profit never changes |
+| New stones (`Rate Used` blank) | follow the live rate on Settings |
+| A selling price you typed | never moves, ever |
+
+When a new stone is settled, type the rate into column P to lock it too.
+
+**Settings B7** records when the rate was last updated and **B8 turns red** once
+it is more than 30 days old.
 
 ---
 
@@ -155,7 +172,18 @@ They read `ASK OWNER`, are excluded from the Profit Summary, and show "On reques
 to customers. You can price them now via `Your Price (Rp)`; you still need the
 cost for margins to work.
 
-Also confirm the **exchange rate** on Settings (16,000 IDR/USD from your original).
+## ⚠️ Your exchange rate is about 12% stale
+
+The rate carried over from the old sheet is **16,000**. The real rate in late
+July 2026 is around **17,900–18,000**. Because the minimum price is cost × 2.5,
+your floor is currently ~12% lower than it should be:
+
+| | at 16,000 | at ~17,935 |
+|---|---|---|
+| VD-001 minimum | Rp 21,868,000 | **Rp 24,512,061** |
+| VD-003 minimum | Rp 41,228,000 | **Rp 46,214,011** |
+
+See **`LIVE-RATE.md`** to connect it to a live feed — about two minutes.
 
 ---
 
