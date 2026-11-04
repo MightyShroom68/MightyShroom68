@@ -1,0 +1,20 @@
+{
+  "name": "Verena diamond stock",
+  "pathAsk": [
+    {
+      "pattern": "\\.xlsx$",
+      "reason": "the stock book is the only place stock is recorded; a change here changes the shop's records"
+    }
+  ],
+  "bashAsk": [
+    {
+      "pattern": "\\b(?:rm|mv|cp|git\\s+(?:rm|mv|checkout|restore))\\b[^|;&]*\\.xlsx\\b|>\\s*[^|;&]*\\.xlsx\\b",
+      "reason": "moves, overwrites or deletes the stock book, the only place stock is recorded"
+    }
+  ],
+  "tests": [
+    { "tool": "Bash", "input": { "command": "rm Verena-Diamond-Stock.xlsx" }, "expect": "ask" },
+    { "tool": "Write", "input": { "file_path": "/repo/Verena-Diamond-Stock.xlsx", "content": "x" }, "expect": "ask" },
+    { "tool": "Edit", "input": { "file_path": "/repo/README.md", "new_string": "x" }, "expect": "allow" }
+  ]
+}
